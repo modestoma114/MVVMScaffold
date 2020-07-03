@@ -1,5 +1,7 @@
 package me.robbin.mvvmscaffold.demo
 
+import android.app.Application
+import androidx.annotation.NonNull
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
@@ -8,7 +10,7 @@ import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
  *
  * Create by Robbin at 2020/7/1
  */
-class TestViewModel: BaseViewModel() {
+class TestViewModel(): BaseViewModel() {
 
     private val user: MutableLiveData<String> = MutableLiveData()
 

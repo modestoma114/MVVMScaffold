@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.novoda.bintray-release'
 
 android {
@@ -46,16 +47,22 @@ dependencies {
 
     def lifecycle_version = "2.2.0"
 
-    // ViewModel
+    // ViewModel-KTX
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    // LiveData
+    // LiveData-KTX
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    // Lifecycle only
+    // Lifecycle-KTX
     api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    api "androidx.activity:activity-ktx:1.1.0"
+    api 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
+    // Fragment-KTX
     api "androidx.fragment:fragment-ktx:1.2.5"
-    api "androidx.fragment:fragment-ktx:1.2.5"
+    // Navigation
     api 'androidx.navigation:navigation-runtime:2.3.0'
+    // Coroutines
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5'
+    // Retrofit
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 }
 
