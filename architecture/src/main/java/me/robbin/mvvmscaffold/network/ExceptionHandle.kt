@@ -1,8 +1,6 @@
 package me.robbin.mvvmscaffold.network
 
 import android.net.ParseException
-import com.google.gson.JsonParseException
-import com.google.gson.stream.MalformedJsonException
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.ConnectException
@@ -21,7 +19,7 @@ object ExceptionHandle {
                     ex = ResponseThrowable(ERROR.HTTP_ERROR, e)
                     return ex
                 }
-                is JsonParseException, is JSONException, is ParseException, is MalformedJsonException -> {
+                is JSONException, is ParseException -> {
                     ex = ResponseThrowable(ERROR.PARSE_ERROR, e)
                     return ex
                 }

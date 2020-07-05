@@ -1,10 +1,9 @@
 package me.robbin.mvvmscaffold.demo
 
-import android.app.Application
-import androidx.annotation.NonNull
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
+import me.robbin.mvvmscaffold.utils.toToast
 
 /**
  *
@@ -12,17 +11,19 @@ import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
  */
 class TestViewModel(): BaseViewModel() {
 
-    private val user: MutableLiveData<String> = MutableLiveData()
-
-    fun getString(): LiveData<String> {
-        if (user.value == null) {
-            loadString()
-        }
-        return user
+    private val number: MutableLiveData<Int> by lazy {
+        MutableLiveData(0)
     }
 
-    private fun loadString() {
-        user.value = "Hello World!"
+    fun add() {
+        if (number.value == null) {
+            number.value == 0
+        }
+        number.value = number.value?.plus(1)
+    }
+
+    fun getNum(): LiveData<Int> {
+        return number
     }
 
 }

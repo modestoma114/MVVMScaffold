@@ -15,15 +15,17 @@ interface IBaseView {
     fun initView(savedInstanceState: Bundle?)
 
     /**
+     * 创建数据观察者
+     * Create by Robbin at 2020/7/1
+     */
+    fun createObserver()
+
+    /**
      * 数据请求
      * Create by Robbin at 2020/7/1
      */
     fun initData()
 
-    /**
-     * 创建数据观察者
-     * Create by Robbin at 2020/7/1
-     */
-    fun createObserver()
+    fun initVariable()
 
 }

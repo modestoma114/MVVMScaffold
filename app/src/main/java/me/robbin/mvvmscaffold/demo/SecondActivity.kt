@@ -1,26 +1,23 @@
 package me.robbin.mvvmscaffold.demo
 
-import android.content.Intent
 import me.robbin.mvvmscaffold.base.activity.BaseDBActivity
 import me.robbin.mvvmscaffold.base.viewmodel.NoViewModel
-import me.robbin.mvvmscaffold.demo.databinding.ActivityMainBinding
+import me.robbin.mvvmscaffold.demo.databinding.ActivitySecondBinding
 import me.robbin.mvvmscaffold.ext.viewmodel.getAppVM
 
-class MainActivity : BaseDBActivity<NoViewModel, ActivityMainBinding>() {
+/**
+ *
+ * Create by Robbin at 2020/7/5
+ */
+class SecondActivity: BaseDBActivity<NoViewModel, ActivitySecondBinding>() {
 
     private val appViewModel by lazy { getAppVM<TestViewModel>() }
 
     override val layoutRes: Int
-        get() = R.layout.activity_main
+        get() = R.layout.activity_second
 
     override fun initVariable() {
         mBinding.viewmodel = appViewModel
-    }
-
-    override fun createObserver() {
-        mBinding.btn.setOnClickListener {
-            startActivity(Intent(this, SecondActivity::class.java))
-        }
     }
 
 }

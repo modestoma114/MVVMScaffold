@@ -3,17 +3,19 @@ package me.robbin.mvvmscaffold.base
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import me.robbin.mvvmscaffold.utils.Utils
+import me.robbin.mvvmscaffold.utils.toToast
 
 /**
  * Application 基类，获取应用级的 ViewModel 以及初始化工具类
  * Create by Robbin at 2020/7/1
  */
-abstract class BaseApplication : Application(), ViewModelStoreOwner {
+open class BaseApplication : Application(), ViewModelStoreOwner {
 
     private lateinit var mAppViewModelStore: ViewModelStore
 
@@ -21,14 +23,10 @@ abstract class BaseApplication : Application(), ViewModelStoreOwner {
 
     override fun onCreate() {
         super.onCreate()
-        setApplication(this)
-    }
-
-    @Synchronized
-    fun setApplication(@NonNull application: Application) {
+        "I`m initialized".toToast()
         mAppViewModelStore = ViewModelStore()
-        Utils.init(application)
-        application.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+        Utils.init(this)
+        this.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                 AppManager.addActivity(activity)
             }

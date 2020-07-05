@@ -14,20 +14,16 @@ import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
  */
 abstract class BaseDBFragment<VM : BaseViewModel, VDB : ViewDataBinding> : BaseVMFragment<VM>() {
 
-    private lateinit var mBinding: VDB
+    protected lateinit var mBinding: VDB
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding = DataBindingUtil.inflate(inflater, layoutRes(), container, false)
-        mBinding.lifecycleOwner = this
+        mBinding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
+        mBinding.lifecycleOwner = viewLifecycleOwner
         return mBinding.root
-    }
-
-    protected fun getBinding(): VDB {
-        return mBinding
     }
 
 }

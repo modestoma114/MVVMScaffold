@@ -1,6 +1,7 @@
 package me.robbin.mvvmscaffold.demo
 
 import me.robbin.mvvmscaffold.base.BaseApplication
+import me.robbin.mvvmscaffold.utils.toToast
 
 /**
  *
@@ -8,6 +9,9 @@ import me.robbin.mvvmscaffold.base.BaseApplication
  */
 class App: BaseApplication() {
 
-
+    override fun onCreate() {
+        super.onCreate()
+        "Hello".toToast()
+    }
 
 }

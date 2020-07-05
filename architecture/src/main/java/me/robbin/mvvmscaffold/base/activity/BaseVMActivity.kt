@@ -14,34 +14,34 @@ import me.robbin.mvvmscaffold.ext.viewmodel.getVMCls
 abstract class BaseVMActivity<VM : BaseViewModel> : AppCompatActivity(),
     IBaseView {
 
-    private lateinit var mViewModel: VM
+    protected lateinit var mViewModel: VM
 
     // 判断是否使用 DataBinding
     private var useDB = false
 
     // 视图文件
-    protected abstract fun layoutRes(): Int
+    protected abstract val layoutRes: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mViewModel = createViewModel()
         if (!useDB) {
-            setContentView(layoutRes())
+            setContentView(layoutRes)
         } else {
             initDataBinding()
         }
-        mViewModel = createViewModel()
         initView(savedInstanceState)
-        initData()
         createObserver()
+        initData()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
     }
 
-    override fun initData() {
+    override fun createObserver() {
     }
 
-    override fun createObserver() {
+    override fun initData() {
     }
 
     /**
@@ -53,13 +53,9 @@ abstract class BaseVMActivity<VM : BaseViewModel> : AppCompatActivity(),
     }
 
     /**
-     * 获取 Activity 级别的 ViewModel
-     * Create by Robbin at 2020/7/2
+     * 使用DataBinding
+     * Create by Robbin at 2020/7/1
      */
-    protected fun getViewModel(): VM {
-        return mViewModel
-    }
-
     protected fun useDataBinding(use: Boolean) {
         useDB = use
     }
@@ -69,5 +65,8 @@ abstract class BaseVMActivity<VM : BaseViewModel> : AppCompatActivity(),
      * Create by Robbin at 2020/7/1
      */
     open fun initDataBinding() {}
+
+    override fun initVariable() {
+    }
 
 }

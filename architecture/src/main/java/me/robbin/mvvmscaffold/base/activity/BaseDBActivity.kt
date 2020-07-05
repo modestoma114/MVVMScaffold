@@ -11,7 +11,7 @@ import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
  */
 abstract class BaseDBActivity<VM : BaseViewModel, VDB : ViewDataBinding> : BaseVMActivity<VM>() {
 
-    private lateinit var mBinding: VDB
+    protected lateinit var mBinding: VDB
 
     override fun onCreate(savedInstanceState: Bundle?) {
         useDataBinding(true)
@@ -19,12 +19,9 @@ abstract class BaseDBActivity<VM : BaseViewModel, VDB : ViewDataBinding> : BaseV
     }
 
     override fun initDataBinding() {
-        mBinding = DataBindingUtil.setContentView(this, layoutRes())
+        mBinding = DataBindingUtil.setContentView(this, layoutRes)
         mBinding.lifecycleOwner = this
-    }
-
-    protected fun getBinding(): VDB {
-        return mBinding
+        initVariable()
     }
 
 }
