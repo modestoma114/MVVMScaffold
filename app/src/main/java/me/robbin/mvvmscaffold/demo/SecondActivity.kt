@@ -1,7 +1,7 @@
 package me.robbin.mvvmscaffold.demo
 
 import me.robbin.mvvmscaffold.base.activity.BaseDBActivity
-import me.robbin.mvvmscaffold.base.viewmodel.NoViewModel
+import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
 import me.robbin.mvvmscaffold.demo.databinding.ActivitySecondBinding
 import me.robbin.mvvmscaffold.ext.viewmodel.getAppVM
 
@@ -9,7 +9,7 @@ import me.robbin.mvvmscaffold.ext.viewmodel.getAppVM
  *
  * Create by Robbin at 2020/7/5
  */
-class SecondActivity: BaseDBActivity<NoViewModel, ActivitySecondBinding>() {
+class SecondActivity: BaseDBActivity<BaseViewModel, ActivitySecondBinding>() {
 
     private val appViewModel by lazy { getAppVM<TestViewModel>() }
 

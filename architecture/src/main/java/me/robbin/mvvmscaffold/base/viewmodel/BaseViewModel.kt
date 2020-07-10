@@ -15,12 +15,17 @@ import me.robbin.mvvmscaffold.network.ResponseThrowable
  * ViewModel基类
  * Create by Robbin at 2020/6/30
  */
-abstract class BaseViewModel(): ViewModel(), LifecycleObserver {
+open class BaseViewModel() : ViewModel(), LifecycleObserver {
 
-    val defUI: UIChange by lazy { UIChange() }
+    val uiEvent: UIChange by lazy { UIChange() }
 
-    private fun launchUI(block: suspend CoroutineScope.() -> Unit) = viewModelScope.launch { block() }
+    private fun launchUI(block: suspend CoroutineScope.() -> Unit) =
+        viewModelScope.launch { block() }
 
+    /**
+     * 启动冷数据流Flow
+     * Create by Robbin at 2020/7/3
+     */
     fun <T> launchFlow(block: suspend () -> T): Flow<T> {
         return flow {
             emit(block())
@@ -29,27 +34,27 @@ abstract class BaseViewModel(): ViewModel(), LifecycleObserver {
 
     /**
      * 不过滤请求结果
-     * @param block         请求体
-     * @param error         失败回调
-     * @param complete      完成回调（无论成功失败都会调用）
-     * @param isShowLoading  是否显示加载框
+     * @param block          协程执行体
+     * @param error          失败回调
+     * @param complete       完成回调（无论成功失败都会调用）
+     * @param isShowLoading  是否显示加载
      * Create by Robbin at 2020/7/3
      */
     fun launchGo(
         block: suspend CoroutineScope.() -> Unit,
         error: suspend CoroutineScope.(ResponseThrowable) -> Unit = {
-            defUI.toastEvent.postValue("${it.code}: ${it.errMsg}")
+            uiEvent.toastEvent.postValue("${it.code}: ${it.errMsg}")
         },
         complete: suspend CoroutineScope.() -> Unit = {},
         isShowLoading: Boolean = true
     ) {
-        if (isShowLoading) defUI.showLoading.call()
+        if (isShowLoading) uiEvent.showLoading.call()
         launchUI {
             handleException(
                 withContext(Dispatchers.IO) { block },
                 { error(it) },
                 {
-                    defUI.dismissLoading.call()
+                    uiEvent.dismissLoading.call()
                     complete()
                 }
             )
@@ -58,17 +63,62 @@ abstract class BaseViewModel(): ViewModel(), LifecycleObserver {
 
     /**
      * 过滤请求结果，其他全抛异常
-     * @param block 请求体
-     * @param success 成功回调
-     * @param error 失败回调
-     * @param complete  完成回调（无论成功失败都会调用）
-     * @param isShowDialog 是否显示加载框
+     * @param block         协程执行体
+     * @param success       成功回调
+     * @param error         失败回调
+     * @param complete      完成回调
+     * @param isShowLoading  是否显示加载
      * Create by Robbin at 2020/7/3
      */
-    fun <T> launchOnlyResult() {}
+    fun <T> launchOnlyResult(
+        block: suspend CoroutineScope.() -> IBaseResponse<T>,
+        success: (T) -> Unit,
+        error: (ResponseThrowable) -> Unit = {
+            uiEvent.toastEvent.postValue("${it.code}: ${it.message}")
+        },
+        complete: () -> Unit = {},
+        isShowLoading: Boolean = true
+    ) {
+        if (isShowLoading) uiEvent.showLoading.call()
+        launchUI {
+            handleException(
+                { withContext(Dispatchers.IO) { block() } },
+                { res ->
+                    handleResponse(res) {
+                        success(it)
+                    }
+                },
+                { error(it) },
+                {
+                    uiEvent.dismissLoading.call()
+                    complete()
+                }
+            )
+        }
+    }
+
+    /**
+     * 处理请求结果
+     * @param response  请求结果
+     * @param success   成功回调
+     * Create by Robbin at 2020/7/3
+     */
+    private suspend fun <T> handleResponse(
+        response: IBaseResponse<T>,
+        success: suspend CoroutineScope.(T) -> Unit
+    ) {
+        coroutineScope {
+            if (response.isSuccess()) success(response.data())
+            else throw ResponseThrowable(response.code(), response.msg())
+        }
+    }
 
     /**
      * 异常统一处理
+     * @param block     协程执行体
+     * @param success   成功回调
+     * @param error     失败回调
+     * @param complete  完成回调
      * Create by Robbin at 2020/7/3
      */
     private suspend fun <T> handleException(
@@ -90,6 +140,9 @@ abstract class BaseViewModel(): ViewModel(), LifecycleObserver {
 
     /**
      * 异常统一处理
+     * @param block     协程执行体
+     * @param error     失败回调
+     * @param complete  完成回调
      * Create by Robbin at 2020/7/3
      */
     private suspend fun handleException(
@@ -108,9 +161,17 @@ abstract class BaseViewModel(): ViewModel(), LifecycleObserver {
         }
     }
 
+    /**
+     * 与网络加载配套使用
+     */
     inner class UIChange {
+        // 开始加载动画
         val showLoading by lazy { EventLiveData<String>() }
+
+        // 结束加载动画
         val dismissLoading by lazy { EventLiveData<String>() }
+
+        // 输出错误信息
         val toastEvent by lazy { EventLiveData<String>() }
     }
 

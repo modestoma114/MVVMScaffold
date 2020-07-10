@@ -1,11 +1,8 @@
 package me.robbin.mvvmscaffold.demo
 
 import android.os.Bundle
-import androidx.fragment.app.activityViewModels
 import me.robbin.mvvmscaffold.base.fragment.BaseDBFragment
-import me.robbin.mvvmscaffold.base.viewmodel.NoViewModel
 import me.robbin.mvvmscaffold.demo.databinding.FragmentTestBinding
-import me.robbin.mvvmscaffold.ext.viewmodel.getAppVM
 
 /**
  *

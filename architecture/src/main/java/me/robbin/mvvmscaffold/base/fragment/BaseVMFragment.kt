@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import me.robbin.mvvmscaffold.base.IBaseView
 import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
 import me.robbin.mvvmscaffold.ext.viewmodel.getVMCls
+import me.robbin.mvvmscaffold.utils.toToast
 
 /**
  * Fragment 基类（使用 ViewModel）
@@ -86,5 +88,33 @@ abstract class BaseVMFragment<VM : BaseViewModel> : Fragment(),
     private fun createViewModel(): VM {
         return ViewModelProvider(this).get(getVMCls(this))
     }
+
+    /**
+     * 注册 UI 事件
+     * Create by Robbin at 2020/7/3
+     */
+    private fun registerUIEvent() {
+        mViewModel.uiEvent.showLoading.observe(this, Observer {
+            showLoading()
+        })
+        mViewModel.uiEvent.dismissLoading.observe(this, Observer {
+            dismissLoading()
+        })
+        mViewModel.uiEvent.toastEvent.observe(viewLifecycleOwner, Observer {
+            it.toToast()
+        })
+    }
+
+    /**
+     * 打开Loading
+     * Create by Robbin at 2020/7/3
+     */
+    open fun showLoading() {}
+
+    /**
+     * 关闭Loading
+     * Create by Robbin at 2020/7/3
+     */
+    open fun dismissLoading() {}
 
 }

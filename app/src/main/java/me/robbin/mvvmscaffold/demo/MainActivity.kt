@@ -1,12 +1,18 @@
 package me.robbin.mvvmscaffold.demo
 
-import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import me.robbin.mvvmscaffold.base.activity.BaseDBActivity
-import me.robbin.mvvmscaffold.base.viewmodel.NoViewModel
+import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
 import me.robbin.mvvmscaffold.demo.databinding.ActivityMainBinding
 import me.robbin.mvvmscaffold.ext.viewmodel.getAppVM
+import me.robbin.mvvmscaffold.utils.toToast
 
-class MainActivity : BaseDBActivity<NoViewModel, ActivityMainBinding>() {
+
+class MainActivity : BaseDBActivity<BaseViewModel, ActivityMainBinding>() {
 
     private val appViewModel by lazy { getAppVM<TestViewModel>() }
 
@@ -17,10 +23,39 @@ class MainActivity : BaseDBActivity<NoViewModel, ActivityMainBinding>() {
         mBinding.viewmodel = appViewModel
     }
 
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
+        supportFragmentManager.commit {
+            add<TestFragment>(R.id.fragment_container).addToBackStack("${System.currentTimeMillis()}")
+        }
+    }
+
     override fun createObserver() {
         mBinding.btn.setOnClickListener {
-            startActivity(Intent(this, SecondActivity::class.java))
+            setPadding(mBinding.btn)
         }
+    }
+
+    private val TAG_OFFSET = "TAG_OFFSET"
+    private val KEY_OFFSET = -123
+
+    private fun setBottomMargin(view: View, bottom: Int) {
+        val lp = view.layoutParams as (ViewGroup.MarginLayoutParams)
+        lp.setMargins(0, 0, 0, bottom)
+        view.layoutParams = lp
+        "HaHa".toToast()
+        view.requestLayout()
+    }
+
+    private fun setPadding(view: View) {
+        val lp = view.layoutParams
+        if (lp != null && lp.height > 0) {
+            lp.height += 30 //增高
+        }
+        view.setPadding(
+            view.paddingLeft, view.paddingTop + 30,
+            view.paddingRight, view.paddingBottom
+        )
     }
 
 }

@@ -53,7 +53,6 @@ dependencies {
     api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     // Lifecycle-KTX
     api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    api 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
     // Fragment-KTX
     api "androidx.fragment:fragment-ktx:1.2.5"
     // Navigation
@@ -61,11 +60,11 @@ dependencies {
     // Coroutines
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7'
     // Retrofit
-    api 'com.squareup.retrofit2:retrofit:2.9.0'
-    api 'com.squareup.retrofit2:converter-moshi:2.9.0'
-    // Moshi
-    api "com.squareup.moshi:moshi:1.9.3"
-    kapt('com.squareup.moshi:moshi-kotlin-codegen:1.9.3')
+//    api 'com.squareup.retrofit2:retrofit:2.9.0'
+//    api 'com.squareup.retrofit2:converter-moshi:2.9.0'
+//    // Moshi
+//    api "com.squareup.moshi:moshi:1.9.3"
+//    kapt('com.squareup.moshi:moshi-kotlin-codegen:1.9.3')
 
 }
 
