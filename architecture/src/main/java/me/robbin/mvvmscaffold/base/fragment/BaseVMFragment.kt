@@ -54,6 +54,7 @@ abstract class BaseVMFragment<VM : BaseViewModel> : Fragment(),
         mViewModel = createViewModel()
         initVariable()
         initView(savedInstanceState)
+        registerUIEvent()
         createObserver()
         initData()
     }
