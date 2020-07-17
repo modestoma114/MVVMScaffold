@@ -9,6 +9,8 @@ import me.robbin.mvvmscaffold.base.activity.BaseDBActivity
 import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
 import me.robbin.mvvmscaffold.demo.databinding.ActivityMainBinding
 import me.robbin.mvvmscaffold.ext.viewmodel.getAppVM
+import me.robbin.mvvmscaffold.utils.StatusBarUtils
+import me.robbin.mvvmscaffold.utils.setStatusBarTransparent
 import me.robbin.mvvmscaffold.utils.toToast
 
 
@@ -28,6 +30,8 @@ class MainActivity : BaseDBActivity<BaseViewModel, ActivityMainBinding>() {
         supportFragmentManager.commit {
             add<TestFragment>(R.id.fragment_container).addToBackStack("${System.currentTimeMillis()}")
         }
+        setStatusBarTransparent()
+        StatusBarUtils.getStatusBarHeight().toToast()
     }
 
     override fun createObserver() {

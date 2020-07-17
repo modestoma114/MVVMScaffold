@@ -3,6 +3,7 @@ package me.robbin.mvvmscaffold.demo
 import android.os.Bundle
 import me.robbin.mvvmscaffold.base.fragment.BaseDBFragment
 import me.robbin.mvvmscaffold.demo.databinding.FragmentTestBinding
+import me.robbin.mvvmscaffold.utils.setStatusBarLightMode
 
 /**
  *
@@ -20,6 +21,7 @@ class TestFragment: BaseDBFragment<TestViewModel, FragmentTestBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
         mBinding.viewmodel = mViewModel
+        setStatusBarLightMode(true)
     }
 
 }

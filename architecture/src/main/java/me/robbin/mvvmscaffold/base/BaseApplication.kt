@@ -23,7 +23,6 @@ open class BaseApplication : Application(), ViewModelStoreOwner {
 
     override fun onCreate() {
         super.onCreate()
-        "I`m initialized".toToast()
         mAppViewModelStore = ViewModelStore()
         Utils.init(this)
         this.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
