@@ -3,7 +3,9 @@ package me.robbin.mvvmscaffold.demo
 import android.os.Bundle
 import me.robbin.mvvmscaffold.base.fragment.BaseDBFragment
 import me.robbin.mvvmscaffold.demo.databinding.FragmentTestBinding
+import me.robbin.mvvmscaffold.utils.getSP
 import me.robbin.mvvmscaffold.utils.setStatusBarLightMode
+import me.robbin.mvvmscaffold.utils.toToast
 
 /**
  *
@@ -22,6 +24,7 @@ class TestFragment: BaseDBFragment<TestViewModel, FragmentTestBinding>() {
         super.initView(savedInstanceState)
         mBinding.viewmodel = mViewModel
         setStatusBarLightMode(true)
+        getSP("MainActivity").getString("app_name")?.toToast()
     }
 
 }

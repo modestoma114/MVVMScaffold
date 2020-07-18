@@ -10,6 +10,7 @@ import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
 import me.robbin.mvvmscaffold.demo.databinding.ActivityMainBinding
 import me.robbin.mvvmscaffold.ext.viewmodel.getAppVM
 import me.robbin.mvvmscaffold.utils.StatusBarUtils
+import me.robbin.mvvmscaffold.utils.getSP
 import me.robbin.mvvmscaffold.utils.setStatusBarTransparent
 import me.robbin.mvvmscaffold.utils.toToast
 
@@ -32,6 +33,9 @@ class MainActivity : BaseDBActivity<BaseViewModel, ActivityMainBinding>() {
         }
         setStatusBarTransparent()
         StatusBarUtils.getStatusBarHeight().toToast()
+//        getSP("MainActivity").put("app_name", "MVVMScaffold")
+//        getSP("MainActivity").clear()
+//        getSP("MainActivity").getString("app_name")?.toToast()
     }
 
     override fun createObserver() {
