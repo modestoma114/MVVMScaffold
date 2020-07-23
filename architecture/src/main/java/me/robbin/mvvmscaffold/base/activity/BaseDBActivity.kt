@@ -1,8 +1,10 @@
 package me.robbin.mvvmscaffold.base.activity
 
 import android.os.Bundle
+import androidx.core.util.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import me.robbin.mvvmscaffold.base.DataBindingConfig
 import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
 
 /**
@@ -13,15 +15,23 @@ abstract class BaseDBActivity<VM : BaseViewModel, VDB : ViewDataBinding> : BaseV
 
     protected lateinit var mBinding: VDB
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        useDataBinding(true)
-        super.onCreate(savedInstanceState)
-    }
+    protected abstract fun getDataBindingConfig(): DataBindingConfig
 
-    override fun initDataBinding() {
-        mBinding = DataBindingUtil.setContentView(this, layoutRes)
+    override fun getLayoutRes(): Int = -1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mBinding = DataBindingUtil.setContentView(this, getDataBindingConfig().getLayout())
         mBinding.lifecycleOwner = this
-        initVariable()
+        mBinding.setVariable(
+            getDataBindingConfig().getVmVariableId(),
+            getDataBindingConfig().getStateViewModel()
+        )
+        val bindingParams = getDataBindingConfig().getBindingParams()
+        bindingParams.forEach { key, value ->
+            mBinding.setVariable(key, value)
+        }
+        initView(savedInstanceState)
     }
 
 }

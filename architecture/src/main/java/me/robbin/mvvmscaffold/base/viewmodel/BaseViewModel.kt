@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import me.robbin.mvvmscaffold.callback.livedata.event.EventLiveData
+import me.robbin.mvvmscaffold.fix.livedata.UnPeekLiveData
 import me.robbin.mvvmscaffold.network.ExceptionHandle
 import me.robbin.mvvmscaffold.network.IBaseResponse
 import me.robbin.mvvmscaffold.network.ResponseThrowable
@@ -15,7 +15,7 @@ import me.robbin.mvvmscaffold.network.ResponseThrowable
  * ViewModel基类
  * Create by Robbin at 2020/6/30
  */
-open class BaseViewModel() : ViewModel(), LifecycleObserver {
+open class BaseViewModel : ViewModel(), LifecycleObserver {
 
     val uiEvent: UIChange by lazy { UIChange() }
 
@@ -48,13 +48,13 @@ open class BaseViewModel() : ViewModel(), LifecycleObserver {
         complete: suspend CoroutineScope.() -> Unit = {},
         isShowLoading: Boolean = true
     ) {
-        if (isShowLoading) uiEvent.showLoading.call()
+        if (isShowLoading) uiEvent.showLoading.postValue(null)
         launchUI {
             handleException(
                 withContext(Dispatchers.IO) { block },
                 { error(it) },
                 {
-                    uiEvent.dismissLoading.call()
+                    uiEvent.dismissLoading.postValue(null)
                     complete()
                 }
             )
@@ -63,10 +63,10 @@ open class BaseViewModel() : ViewModel(), LifecycleObserver {
 
     /**
      * 过滤请求结果，其他全抛异常
-     * @param block         协程执行体
-     * @param success       成功回调
-     * @param error         失败回调
-     * @param complete      完成回调
+     * @param block          协程执行体
+     * @param success        成功回调
+     * @param error          失败回调
+     * @param complete       完成回调
      * @param isShowLoading  是否显示加载
      * Create by Robbin at 2020/7/3
      */
@@ -79,7 +79,7 @@ open class BaseViewModel() : ViewModel(), LifecycleObserver {
         complete: () -> Unit = {},
         isShowLoading: Boolean = true
     ) {
-        if (isShowLoading) uiEvent.showLoading.call()
+        if (isShowLoading) uiEvent.showLoading.postValue(null)
         launchUI {
             handleException(
                 { withContext(Dispatchers.IO) { block() } },
@@ -90,7 +90,7 @@ open class BaseViewModel() : ViewModel(), LifecycleObserver {
                 },
                 { error(it) },
                 {
-                    uiEvent.dismissLoading.call()
+                    uiEvent.dismissLoading.postValue(null)
                     complete()
                 }
             )
@@ -109,7 +109,7 @@ open class BaseViewModel() : ViewModel(), LifecycleObserver {
     ) {
         coroutineScope {
             if (response.isSuccess()) success(response.data())
-            else throw ResponseThrowable(response.code(), response.msg())
+            else throw ResponseThrowable(response.code().toString(), response.msg())
         }
     }
 
@@ -166,13 +166,19 @@ open class BaseViewModel() : ViewModel(), LifecycleObserver {
      */
     inner class UIChange {
         // 开始加载动画
-        val showLoading by lazy { EventLiveData<String>() }
+        val showLoading by lazy {
+            UnPeekLiveData.Builder<String>().setAllowNullValue(true).create()
+        }
 
         // 结束加载动画
-        val dismissLoading by lazy { EventLiveData<String>() }
+        val dismissLoading: UnPeekLiveData<String> by lazy {
+            UnPeekLiveData.Builder<String>().setAllowNullValue(true).create()
+        }
 
         // 输出错误信息
-        val toastEvent by lazy { EventLiveData<String>() }
+        val toastEvent by lazy {
+            UnPeekLiveData.Builder<String>().setAllowNullValue(true).create()
+        }
     }
 
 }

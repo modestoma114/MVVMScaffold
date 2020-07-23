@@ -18,20 +18,19 @@ abstract class BaseVMActivity<VM : BaseViewModel> : AppCompatActivity(),
 
     protected lateinit var mViewModel: VM
 
-    // 判断是否使用 DataBinding
-    private var useDB = false
-
     // 视图文件
-    protected abstract val layoutRes: Int
+    protected abstract fun getLayoutRes(): Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewModel = createViewModel()
-        if (!useDB) {
-            setContentView(layoutRes)
-        } else {
-            initDataBinding()
+        if (getLayoutRes() != -1) {
+            setContentView(getLayoutRes())
+            init(savedInstanceState)
         }
+    }
+
+    private fun init(savedInstanceState: Bundle?) {
         initView(savedInstanceState)
         registerUIEvent()
         createObserver()
@@ -53,23 +52,6 @@ abstract class BaseVMActivity<VM : BaseViewModel> : AppCompatActivity(),
      */
     private fun createViewModel(): VM {
         return ViewModelProvider(this).get(getVMCls(this))
-    }
-
-    /**
-     * 使用DataBinding
-     * Create by Robbin at 2020/7/1
-     */
-    protected fun useDataBinding(use: Boolean) {
-        useDB = use
-    }
-
-    /**
-     * 初始化 DataBinding
-     * Create by Robbin at 2020/7/1
-     */
-    open fun initDataBinding() {}
-
-    override fun initVariable() {
     }
 
     /**

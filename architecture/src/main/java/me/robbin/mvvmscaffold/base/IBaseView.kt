@@ -26,6 +26,4 @@ interface IBaseView {
      */
     fun initData()
 
-    fun initVariable()
-
 }

@@ -4,7 +4,7 @@
 
     <data>
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="me.robbin.mvvmscaffold.demo.TestViewModel" />
     </data>
 
@@ -16,7 +16,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewmodel.num.toString()}"
+            android:text="@{viewModel.num.toString()}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -24,7 +24,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewmodel.add()}"
+            android:onClick="@{() -> viewModel.add()}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -2,9 +2,14 @@ package me.robbin.mvvmscaffold.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
+import okhttp3.internal.Util
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 
 /**
@@ -16,6 +21,7 @@ class SPUtils {
 
     companion object {
         private val SP_UTILS_MAP: HashMap<String, SPUtils> = HashMap()
+
         /**
          * Return the single {@link SPUtils} instance
          * Create by Robbin at 2020/7/18
@@ -36,6 +42,15 @@ class SPUtils {
             }
             return spUtils!!
         }
+
+        fun getInstance(spName: String) {
+            getInstance(spName, Context.MODE_PRIVATE)
+        }
+
+        fun getInstance(mode: Int) {
+            getInstance("", mode)
+        }
+
     }
 
     private var sp: SharedPreferences
@@ -43,8 +58,6 @@ class SPUtils {
     private constructor(spName: String, mode: Int) {
         sp = Utils.getAPP().getSharedPreferences(spName, mode)
     }
-
-    private constructor(spName: String) : this(spName, Context.MODE_PRIVATE)
 
     /**
      * Put the string value in sp
@@ -70,7 +83,7 @@ class SPUtils {
      * Return the string value in sp
      * Create by Robbin at 2020/7/18
      */
-    fun getString(key: String): String? {
+    fun getString(key: String): String {
         return getString(key, "")
     }
 
@@ -78,8 +91,8 @@ class SPUtils {
      * Return the string value in sp
      * Create by Robbin at 2020/7/18
      */
-    fun getString(key: String, default: String): String? {
-        return sp.getString(key, default)
+    fun getString(key: String, default: String): String {
+        return sp.getString(key, default) ?: default
     }
 
     /**

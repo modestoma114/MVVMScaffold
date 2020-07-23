@@ -2,57 +2,29 @@ package me.robbin.mvvmscaffold.demo
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import me.robbin.mvvmscaffold.base.DataBindingConfig
 import me.robbin.mvvmscaffold.base.activity.BaseDBActivity
-import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
 import me.robbin.mvvmscaffold.demo.databinding.ActivityMainBinding
-import me.robbin.mvvmscaffold.ext.viewmodel.getAppVM
-import me.robbin.mvvmscaffold.utils.StatusBarUtils
-import me.robbin.mvvmscaffold.utils.getSP
 import me.robbin.mvvmscaffold.utils.setStatusBarTransparent
-import me.robbin.mvvmscaffold.utils.toToast
 
 
-class MainActivity : BaseDBActivity<BaseViewModel, ActivityMainBinding>() {
+class MainActivity : BaseDBActivity<TestViewModel, ActivityMainBinding>() {
 
-    private val appViewModel by lazy { getAppVM<TestViewModel>() }
-
-    override val layoutRes: Int
-        get() = R.layout.activity_main
-
-    override fun initVariable() {
-        mBinding.viewmodel = appViewModel
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.activity_main, BR.viewModel, mViewModel)
     }
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        supportFragmentManager.commit {
-            add<TestFragment>(R.id.fragment_container).addToBackStack("${System.currentTimeMillis()}")
-        }
         setStatusBarTransparent()
-        StatusBarUtils.getStatusBarHeight().toToast()
-//        getSP("MainActivity").put("app_name", "MVVMScaffold")
-//        getSP("MainActivity").clear()
-//        getSP("MainActivity").getString("app_name")?.toToast()
     }
 
     override fun createObserver() {
         mBinding.btn.setOnClickListener {
             setPadding(mBinding.btn)
         }
-    }
-
-    private val TAG_OFFSET = "TAG_OFFSET"
-    private val KEY_OFFSET = -123
-
-    private fun setBottomMargin(view: View, bottom: Int) {
-        val lp = view.layoutParams as (ViewGroup.MarginLayoutParams)
-        lp.setMargins(0, 0, 0, bottom)
-        view.layoutParams = lp
-        "HaHa".toToast()
-        view.requestLayout()
     }
 
     private fun setPadding(view: View) {

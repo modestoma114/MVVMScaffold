@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import me.robbin.mvvmscaffold.base.IBaseView
 import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
 import me.robbin.mvvmscaffold.ext.viewmodel.getVMCls
@@ -34,11 +33,16 @@ abstract class BaseVMFragment<VM : BaseViewModel> : Fragment(),
      * 视图文件
      * Create by Robbin at 2020/7/2
      */
-    protected abstract val layoutRes: Int
+    protected abstract fun getLayoutRes(): Int
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mActivity = context as AppCompatActivity
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewModel = createViewModel()
     }
 
     override fun onCreateView(
@@ -46,13 +50,11 @@ abstract class BaseVMFragment<VM : BaseViewModel> : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layoutRes, container, false)
+        return inflater.inflate(getLayoutRes(), container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mViewModel = createViewModel()
-        initVariable()
         initView(savedInstanceState)
         registerUIEvent()
         createObserver()
@@ -77,9 +79,6 @@ abstract class BaseVMFragment<VM : BaseViewModel> : Fragment(),
     }
 
     protected fun lazyLoad() {
-    }
-
-    override fun initVariable() {
     }
 
     /**

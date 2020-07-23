@@ -1,3 +1,4 @@
+include ':lib_net'
 include ':architecture'
 include ':app'
 rootProject.name = "MVVMScaffold"

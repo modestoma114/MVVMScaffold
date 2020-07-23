@@ -69,7 +69,7 @@ publish {
     repoName = 'MVVMScaffold'
     groupId = 'me.robbin.mvvmscaffold'
     artifactId = 'mvvmscaffold'
-    publishVersion = '0.1.5'
+    publishVersion = '0.1.7'
     desc = 'A toolkit help to build Android MVVM Application'
     website = 'https://github.com/RobbinM/MVVMScaffold'
     licences = ['Apache-2.0']

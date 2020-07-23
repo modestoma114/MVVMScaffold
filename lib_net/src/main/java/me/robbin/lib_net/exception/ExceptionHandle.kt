@@ -1,4 +1,4 @@
-package me.robbin.mvvmscaffold.network
+package me.robbin.lib_net.exception
 
 import android.net.ParseException
 import com.google.gson.JsonParseException

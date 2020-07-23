@@ -1,30 +1,21 @@
 package me.robbin.mvvmscaffold.demo
 
-import android.os.Bundle
+import androidx.fragment.app.activityViewModels
+import me.robbin.mvvmscaffold.base.DataBindingConfig
 import me.robbin.mvvmscaffold.base.fragment.BaseDBFragment
+import me.robbin.mvvmscaffold.base.viewmodel.BaseViewModel
 import me.robbin.mvvmscaffold.demo.databinding.FragmentTestBinding
-import me.robbin.mvvmscaffold.utils.getSP
-import me.robbin.mvvmscaffold.utils.setStatusBarLightMode
-import me.robbin.mvvmscaffold.utils.toToast
 
 /**
  *
  * Create by Robbin at 2020/7/5
  */
-class TestFragment: BaseDBFragment<TestViewModel, FragmentTestBinding>() {
+class TestFragment : BaseDBFragment<BaseViewModel, FragmentTestBinding>() {
 
-    override val layoutRes: Int
-        get() = R.layout.fragment_test
+    private val testViewModel by activityViewModels<TestViewModel>()
 
-//    private val activityVM by lazy {
-//        getAppVM<TestViewModel>()
-//    }
-
-    override fun initView(savedInstanceState: Bundle?) {
-        super.initView(savedInstanceState)
-        mBinding.viewmodel = mViewModel
-        setStatusBarLightMode(true)
-        getSP("MainActivity").getString("app_name")?.toToast()
+    override fun getDataBindingConfig(): DataBindingConfig {
+        return DataBindingConfig(R.layout.fragment_test, BR.viewModel, testViewModel)
     }
 
 }

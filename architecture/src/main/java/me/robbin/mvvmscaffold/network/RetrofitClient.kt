@@ -3,7 +3,6 @@ package me.robbin.mvvmscaffold.network
 import me.robbin.mvvmscaffold.utils.Utils
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import okhttp3.internal.cache.CacheInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File

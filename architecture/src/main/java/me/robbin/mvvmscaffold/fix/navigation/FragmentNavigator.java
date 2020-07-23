@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.robbin.mvvmscaffold.navigation;
+package me.robbin.mvvmscaffold.fix.navigation;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -101,14 +101,6 @@ public class FragmentNavigator extends Navigator<FragmentNavigator.Destination> 
                 FragmentManager.POP_BACK_STACK_INCLUSIVE);
         mBackStack.removeLast();
         return true;
-    }
-
-    public void removeFragment(Class<? extends Fragment> tClass){
-        for (Fragment fragment : mFragmentManager.getFragments()) {
-            if(fragment.getClass().getSimpleName().equals(tClass.getSimpleName())){
-                mFragmentManager.popBackStack();
-            }
-        }
     }
 
     @NonNull

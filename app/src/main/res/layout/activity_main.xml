@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="me.robbin.mvvmscaffold.demo.TestViewModel" />
     </data>
 
@@ -19,7 +19,7 @@
             android:id="@+id/number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewmodel.num.toString()}"
+            android:text="@{viewModel.num.toString()}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,12 +35,15 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"
+            android:name="me.robbin.mvvmscaffold.fix.navigation.NavHostFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:defaultNavHost="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn" />
+            app:layout_constraintTop_toBottomOf="@id/btn"
+            app:navGraph="@navigation/nav_main" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

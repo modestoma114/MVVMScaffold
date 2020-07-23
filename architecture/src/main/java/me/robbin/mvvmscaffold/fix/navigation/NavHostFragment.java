@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.robbin.mvvmscaffold.navigation;
+package me.robbin.mvvmscaffold.fix.navigation;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -38,7 +38,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.Navigator;
 
 import me.robbin.mvvmscaffold.R;
-
 
 /**
  * NavHostFragment provides an area within your layout for self-contained navigation to occur.
