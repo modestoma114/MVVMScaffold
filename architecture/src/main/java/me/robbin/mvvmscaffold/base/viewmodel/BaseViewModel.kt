@@ -19,11 +19,11 @@ open class BaseViewModel : ViewModel(), LifecycleObserver {
 
     val uiEvent: UIChange by lazy { UIChange() }
 
-    private fun launchUI(block: suspend CoroutineScope.() -> Unit) =
+    fun launchUI(block: suspend CoroutineScope.() -> Unit) =
         viewModelScope.launch { block() }
 
     /**
-     * 启动冷数据流Flow
+     * 用流的方式进行网络请求
      * Create by Robbin at 2020/7/3
      */
     fun <T> launchFlow(block: suspend () -> T): Flow<T> {
@@ -82,11 +82,13 @@ open class BaseViewModel : ViewModel(), LifecycleObserver {
         if (isShowLoading) uiEvent.showLoading.postValue(null)
         launchUI {
             handleException(
-                { withContext(Dispatchers.IO) { block() } },
-                { res ->
-                    handleResponse(res) {
-                        success(it)
-                    }
+                {
+                    withContext(Dispatchers.IO) {
+                        block().let {
+                            if (it.isSuccess()) it.data()
+                            else throw ResponseThrowable(it.code().toString(), it.msg())
+                        }
+                    }.also { success(it) }
                 },
                 { error(it) },
                 {
@@ -94,47 +96,6 @@ open class BaseViewModel : ViewModel(), LifecycleObserver {
                     complete()
                 }
             )
-        }
-    }
-
-    /**
-     * 处理请求结果
-     * @param response  请求结果
-     * @param success   成功回调
-     * Create by Robbin at 2020/7/3
-     */
-    private suspend fun <T> handleResponse(
-        response: IBaseResponse<T>,
-        success: suspend CoroutineScope.(T) -> Unit
-    ) {
-        coroutineScope {
-            if (response.isSuccess()) success(response.data())
-            else throw ResponseThrowable(response.code().toString(), response.msg())
-        }
-    }
-
-    /**
-     * 异常统一处理
-     * @param block     协程执行体
-     * @param success   成功回调
-     * @param error     失败回调
-     * @param complete  完成回调
-     * Create by Robbin at 2020/7/3
-     */
-    private suspend fun <T> handleException(
-        block: suspend CoroutineScope.() -> IBaseResponse<T>,
-        success: suspend CoroutineScope.(IBaseResponse<T>) -> Unit,
-        error: suspend CoroutineScope.(ResponseThrowable) -> Unit,
-        complete: suspend CoroutineScope.() -> Unit
-    ) {
-        coroutineScope {
-            try {
-                success(block())
-            } catch (e: Throwable) {
-                error(ExceptionHandle.handleException(e))
-            } finally {
-                complete()
-            }
         }
     }
 
